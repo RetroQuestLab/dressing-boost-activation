@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Dressing Boost — activation des mises à jour</title>
+<style>
+  :root { color-scheme: light; --encre:#132334; --muet:#5b7285; --bleu:#175a8e; --or:#f0ad3c; --bord:#d7e0e8; --fond:#f3f6f9; --carte:#fff; --erreur:#a32222; --ok:#176b3a; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--fond); color:var(--encre); font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; }
+  .hero { background:linear-gradient(120deg,#101d2e,#173a58 60%,#0d2438); color:#fff; padding:34px 16px 30px; }
+  .hero-interne { max-width:860px; margin:0 auto; display:flex; gap:18px; align-items:center; }
+  .logo { width:54px; height:54px; border-radius:14px; background:linear-gradient(90deg,var(--or),#ffd884); display:grid; place-items:center; flex:none; }
+  .logo svg { width:32px; height:32px; }
+  h1 { font-size:1.7rem; margin:0 0 4px; }
+  .sous-titre { margin:0; color:#c7d8e8; font-size:.98rem; }
+  main { max-width:860px; margin:-14px auto 48px; padding:0 16px; }
+  .carte { background:var(--carte); border:1px solid var(--bord); border-radius:14px; padding:24px; box-shadow:0 8px 26px rgba(16,35,54,.07); margin-bottom:18px; }
+  .promesse { border-left:4px solid var(--or); background:#fff9ec; color:#5a4210; border-radius:8px; padding:12px 16px; margin-bottom:18px; }
+  h2 { font-size:1.1rem; margin:0 0 12px; }
+  h2 .num { display:inline-grid; place-items:center; width:26px; height:26px; border-radius:50%; background:var(--bleu); color:#fff; font-size:.85rem; margin-right:8px; }
+  p { margin:0 0 12px; }
+  label { display:block; font-weight:600; margin:14px 0 6px; }
+  input,textarea { display:block; width:100%; padding:10px 11px; border:1px solid var(--bord); border-radius:8px; background:#fff; color:var(--encre); font:inherit; }
+  textarea { resize:vertical; min-height:92px; }
+  #cle { min-height:124px; font-family:ui-monospace,Consolas,monospace; font-size:.84rem; }
+  #resultat { min-height:96px; font-family:ui-monospace,Consolas,monospace; font-size:.8rem; word-break:break-all; }
+  input:focus,textarea:focus { outline:2px solid var(--bleu); outline-offset:1px; }
+  button { font:inherit; font-weight:600; padding:10px 18px; border:1px solid var(--bleu); border-radius:8px; background:var(--bleu); color:#fff; cursor:pointer; }
+  button.secondary { background:#fff; color:var(--bleu); }
+  button:disabled { opacity:.5; cursor:not-allowed; }
+  .actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; align-items:center; }
+  .note { color:var(--muet); font-size:.88rem; }
+  #erreur { color:var(--erreur); font-weight:600; margin-top:14px; }
+  #statut { color:var(--ok); font-weight:600; margin-top:12px; }
+  .grille { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:12px; margin-top:6px; }
+  .point { border:1px solid var(--bord); border-radius:10px; padding:14px; background:#fbfdff; }
+  .point b { display:block; margin-bottom:4px; }
+  footer { text-align:center; color:var(--muet); font-size:.85rem; padding:0 16px 32px; }
+  [hidden] { display:none !important; }
+  @media (max-width:600px) { h1{font-size:1.35rem} .carte{padding:18px} .hero{padding:26px 16px} }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-interne">
+    <div class="logo" aria-hidden="true">
+      <svg viewBox="0 0 32 32" fill="none"><path d="M7 17l6 6L26 9" stroke="#10243a" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 9v7M26 9h-7" stroke="#10243a" stroke-width="4.5" stroke-linecap="round"/></svg>
+    </div>
+    <div>
+      <h1>Dressing Boost — activation des mises à jour</h1>
+      <p class="sous-titre">Un bloc chiffré par téléphone. Aucun secret dans l’APK, aucun serveur.</p>
+    </div>
+  </div>
+</header>
+
+<main>
+  <p class="promesse"><b>Cette page n’envoie rien.</b> Elle chiffre vos informations dans votre navigateur avec la clé publique affichée par votre téléphone. Aucun appel réseau, aucun stockage, aucune mesure d’audience. Vous pouvez la déconnecter et la rouvrir : elle fonctionne hors ligne.</p>
+
+  <section class="carte">
+    <h2><span class="num">1</span>Sur votre téléphone</h2>
+    <p>Au premier lancement, l’app affiche l’écran <b>« Activation requise »</b> : touchez <b>« Copier la clé »</b> et collez-la ci-dessous. Cette clé est propre à cet appareil : le bloc obtenu ne fonctionnera nulle part ailleurs. L’app reste verrouillée tant que l’activation n’a pas réussi.</p>
+    <label for="cle">Clé publique de l’appareil</label>
+    <textarea id="cle" spellcheck="false" autocomplete="off" placeholder="Collez ici la clé publique affichée par l’application."></textarea>
+    <p class="note">Base64 d’une clé SPKI RSA. Les retours à la ligne et l’en-tête PEM sont acceptés.</p>
+  </section>
+
+  <section class="carte">
+    <h2><span class="num">2</span>Votre accès au dépôt privé</h2>
+    <div class="grille">
+      <div><label for="owner">Propriétaire GitHub</label><input id="owner" type="text" spellcheck="false" autocomplete="off" value="RetroQuestLab"></div>
+      <div><label for="repo">Dépôt GitHub</label><input id="repo" type="text" spellcheck="false" autocomplete="off" value="dressing-boost"></div>
+    </div>
+    <label for="jeton">Token GitHub (lecture seule)</label>
+    <input id="jeton" type="password" spellcheck="false" autocomplete="off" placeholder="Token fine-grained — contenu : lecture seule">
+    <p class="note">Créez un token « fine-grained » limité à ce dépôt, avec le droit <b>Contents : Read-only</b>. Un token par téléphone, révocable à tout moment sur GitHub.</p>
+    <p class="note">Le token n’est ni affiché ni conservé : le champ est vidé après la génération, réussie ou non.</p>
+    <div class="actions"><button id="generer" type="button">Générer le bloc chiffré</button></div>
+    <p id="erreur" role="alert" hidden></p>
+    <p id="statut" role="status" aria-live="polite"></p>
+  </section>
+
+  <section class="carte">
+    <h2><span class="num">3</span>Rapportez le bloc dans l’app</h2>
+    <label for="resultat">Bloc chiffré (base64)</label>
+    <textarea id="resultat" readonly spellcheck="false" placeholder="Le bloc apparaîtra ici après la génération."></textarea>
+    <div class="actions"><button id="copier" type="button" class="secondary" disabled>Copier le bloc</button></div>
+    <p class="note">Dans l’écran d’activation de l’app : collez le bloc dans « Bloc chiffré reçu » puis touchez « Activer cet appareil ». L’app démarre ensuite normalement. Pour les mises à jour : Réglages → Mises à jour → « Vérifier », « Télécharger », puis « Installer ».</p>
+  </section>
+
+  <section class="carte">
+    <h2>Bon à savoir</h2>
+    <div class="grille">
+      <div class="point"><b>Une activation obligatoire</b>L’APK s’installe sans jeton, mais la première ouverture exige l’activation décrite ici. Le token sert ensuite à rechercher les mises à jour.</div>
+      <div class="point"><b>Bloc non transmissible</b>Chiffré pour un seul appareil : le copier sur un autre téléphone ne fonctionnera pas.</div>
+      <div class="point"><b>Révocation simple</b>Supprimez le token sur GitHub : l’app n’a plus accès aux releases, sans toucher à vos données.</div>
+      <div class="point"><b>Aucune installation automatique</b>Le téléchargement vérifie l’empreinte SHA-256, puis Android demande votre confirmation.</div>
+    </div>
+  </section>
+</main>
+
+<footer>Page statique autonome — aucun service externe, aucune donnée collectée.</footer>
+
+<script>
+(function () {
+  "use strict";
+  var cleInput = document.getElementById("cle");
+  var ownerInput = document.getElementById("owner");
+  var repoInput = document.getElementById("repo");
+  var jetonInput = document.getElementById("jeton");
+  var resultat = document.getElementById("resultat");
+  var genererBtn = document.getElementById("generer");
+  var copierBtn = document.getElementById("copier");
+  var erreurBox = document.getElementById("erreur");
+  var statutBox = document.getElementById("statut");
+
+  function ErreurUtilisateur(message) { this.name = "ErreurUtilisateur"; this.message = message; }
+  ErreurUtilisateur.prototype = Object.create(Error.prototype);
+  ErreurUtilisateur.prototype.constructor = ErreurUtilisateur;
+
+  function afficherErreur(message) { erreurBox.textContent = message || ""; erreurBox.hidden = !message; }
+  function afficherStatut(message) { statutBox.textContent = message || ""; }
+
+  function lireChamps() {
+    var champs = {
+      cle: cleInput.value.trim(),
+      owner: ownerInput.value.trim(),
+      repo: repoInput.value.trim(),
+      jeton: jetonInput.value.trim()
+    };
+    var motif = /^[A-Za-z0-9_.-]+$/;
+    if (!champs.cle) throw new ErreurUtilisateur("Renseignez la clé publique de l'appareil.");
+    if (!champs.owner) throw new ErreurUtilisateur("Renseignez le propriétaire GitHub.");
+    if (!motif.test(champs.owner) || champs.owner.indexOf("..") >= 0) throw new ErreurUtilisateur("Le propriétaire GitHub ne doit contenir que des lettres, des chiffres, des points, des tirets ou des tirets bas, sans '..'.");
+    if (!champs.repo) throw new ErreurUtilisateur("Renseignez le dépôt GitHub.");
+    if (!motif.test(champs.repo) || champs.repo.indexOf("..") >= 0) throw new ErreurUtilisateur("Le dépôt GitHub ne doit contenir que des lettres, des chiffres, des points, des tirets ou des tirets bas, sans '..'.");
+    if (!champs.jeton) throw new ErreurUtilisateur("Renseignez le token GitHub.");
+    if (/\s/.test(champs.jeton)) throw new ErreurUtilisateur("Le token GitHub ne doit pas contenir d'espace.");
+    return champs;
+  }
+
+  function decoderBase64(texte) {
+    var base64 = texte.replace(/-----[^-]+-----/g, "").replace(/\s+/g, "");
+    if (!base64 || !/^[A-Za-z0-9+/]+={0,2}$/.test(base64) || base64.length % 4 !== 0) {
+      throw new ErreurUtilisateur("La clé publique n'est pas un base64 valide.");
+    }
+    var binaire;
+    try { binaire = window.atob(base64); }
+    catch (e) { throw new ErreurUtilisateur("La clé publique n'est pas un base64 valide."); }
+    var octets = new Uint8Array(binaire.length);
+    for (var i = 0; i < binaire.length; i++) octets[i] = binaire.charCodeAt(i);
+    return octets;
+  }
+
+  function encoderBase64(octets) {
+    var binaire = "", taille = 0x8000;
+    for (var i = 0; i < octets.length; i += taille) binaire += String.fromCharCode.apply(null, octets.subarray(i, i + taille));
+    return window.btoa(binaire);
+  }
+
+  async function generer() {
+    afficherErreur(""); afficherStatut(""); resultat.value = ""; copierBtn.disabled = true;
+    genererBtn.disabled = true; genererBtn.textContent = "Génération…";
+    try {
+      if (!window.crypto || !window.crypto.subtle || typeof TextEncoder === "undefined") {
+        throw new ErreurUtilisateur("Ce navigateur ne fournit pas l'API Web Crypto. Utilisez une version récente de Chrome, Edge ou Firefox.");
+      }
+      var champs = lireChamps();
+      var spki = decoderBase64(champs.cle);
+      var clePublique;
+      try {
+        clePublique = await window.crypto.subtle.importKey("spki", spki, { name: "RSA-OAEP", hash: "SHA-1" }, false, ["encrypt"]);
+      } catch (e) { throw new ErreurUtilisateur("La clé publique n'est pas une clé RSA au format SPKI exploitable."); }
+
+      var objet = { v: 1, owner: champs.owner, repo: champs.repo, token: champs.jeton };
+      var clair = new TextEncoder().encode(JSON.stringify(objet));
+      var limite = clePublique.algorithm.modulusLength / 8 - 42;
+      if (clair.length > limite) throw new ErreurUtilisateur("Les informations sont trop volumineuses pour cette clé. Utilisez une clé RSA de 2048 bits ou plus.");
+
+      var chiffre;
+      try { chiffre = await window.crypto.subtle.encrypt({ name: "RSA-OAEP" }, clePublique, clair); }
+      catch (e) { throw new ErreurUtilisateur("Le chiffrement a échoué. Vérifiez la clé publique et réessayez."); }
+
+      resultat.value = encoderBase64(new Uint8Array(chiffre));
+      copierBtn.disabled = false;
+      afficherStatut("Bloc chiffré généré. Reportez-le dans l'application.");
+    } catch (e) {
+      afficherErreur(e instanceof ErreurUtilisateur ? e.message : "La génération a échoué. Vérifiez les champs et réessayez.");
+      resultat.value = ""; copierBtn.disabled = true;
+    } finally {
+      jetonInput.value = "";
+      genererBtn.disabled = false;
+      genererBtn.textContent = "Générer le bloc chiffré";
+    }
+  }
+
+  async function copier() {
+    var texte = resultat.value;
+    if (!texte) return;
+    var reussi = false;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      try { await navigator.clipboard.writeText(texte); reussi = true; } catch (e) { reussi = false; }
+    }
+    if (!reussi) {
+      resultat.focus(); resultat.select();
+      try { reussi = document.execCommand("copy"); } catch (e) { reussi = false; }
+    }
+    afficherStatut(reussi ? "Bloc copié dans le presse-papiers." : "Copie automatique refusée : sélectionnez le bloc et copiez-le manuellement.");
+  }
+
+  genererBtn.addEventListener("click", generer);
+  copierBtn.addEventListener("click", copier);
+  [cleInput, ownerInput, repoInput, jetonInput].forEach(function (champ) {
+    champ.addEventListener("input", function () {
+      resultat.value = ""; copierBtn.disabled = true; afficherErreur(""); afficherStatut("");
+    });
+  });
+}());
+</script>
+</body>
+</html>
